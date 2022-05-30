@@ -6,11 +6,11 @@ headers = set()
 
 def file_processing(element, doc):
     if isinstance(element, panflute.Header):
-        text = panflute.stringify(element)
-        if text in headers:
-            sys.stderr.write("Повторяющиеся заголовки : \"" + text + "\"" + "\n")
+        header = panflute.stringify(element)
+        if header in headers:
+            sys.stderr.write("Повторяющиеся заголовки : \"" + header + "\"" + "\n")
         else:
-            headers.add(text)
+            headers.add(header)
     if isinstance(element, panflute.Str) and element.text == "BOLD":  # Ищу слово в том же регистре, которое в задании
         return panflute.Strong(element)
     if isinstance(element, panflute.Header) and element.level <= 3:

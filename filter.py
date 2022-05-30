@@ -1,27 +1,25 @@
 import sys
-
 import panflute
-from panflute import run_filter
 
-var = set()
-
-
-def upper_str(elem, doc):
-    if isinstance(elem, panflute.Str):
-        elem.text = elem.text.upper()
+headers = set()
 
 
 def file_processing(element, doc):
     if isinstance(element, panflute.Header):
         text = panflute.stringify(element)
-        if text in header:
-            sys.stderr.write("Повторяющиеся заголовки : \"" + element + "\"")
+        if text in headers:
+            sys.stderr.write("Повторяющиеся заголовки : \"" + text + "\"" + "\n")
         else:
-            header += element
-    if isinstance(element, panflute.Str) and element.text.lower() == "bold":
+            headers.add(text)
+    if isinstance(element, panflute.Str) and element.text == "BOLD":  # Ищу слово в том же регистре, которое в задании
         return panflute.Strong(element)
     if isinstance(element, panflute.Header) and element.level <= 3:
-        return element.walk(upper_str)
+        return element.walk(upp_elements)
+
+
+def upp_elements(element, doc):
+    if isinstance(element, panflute.Str):
+        element.text = element.text.upper()
 
 
 def main(doc=None):
